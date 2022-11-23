@@ -130,4 +130,16 @@ app.get("/api/stock", function (req, res) {});
 
 app.post("api/watchlist", function (req, res) {});
 
-app.get("api/watchlist", function (req, res) {});
+app.get("api/watchlist", function (req, res) {
+  const id = req.body.data;
+  const sql = "SELECT * FROM WATCHLISTS WHERE user_id = ?";
+  db.all(sql, id, async(err, rows) => {
+    if (err) {
+      return res.status(400).json({ state: "error", error: err.message });
+    }
+    else {
+      console.log(rows);
+      return res.status(200).json({ state: "success", data: rows});
+    }
+  });
+});
